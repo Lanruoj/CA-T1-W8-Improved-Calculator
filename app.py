@@ -1,31 +1,27 @@
-
 def _get_number(index):
     number = float(input(f"Number {index}: "))
     return number
 
+def _get_goal(goal_dict):
+    
+    print("Options:")
+    print(list(goal_dict.keys()))
+    user_input = input("What would you like to do with these numbers?: ")
+    return user_input
 
-def _get_goal():
-    goal_list = ["add", "subtract", "multiply", "divide", "check factors"
-    ]
-    print("Options:\n{goal_list}")
-    user_input = input("What would you like to do with these numbers?:  ")
-    if user_input in goal_list:
-        return user_input
-    else:
-        return "Invalid goal"
 
-#-------OPERATIONS-------#
+def _print_result(first_number, second_number, operation, result):
+    print(f"{first_number} {operation} {second_number} = {result}")
+
+# ------------------------------------------------ # 
 
 def _factor_check(first_number, second_number):
     if first_number == 0:
         return "Bad input"
-    elif not first_number % second_number:
+    elif first_number % second_number == 0:
         return "True"
     else:
-        return "False" 
-
-def _print_result(first_number, second_number, operation, result):
-    print(f"{first_number} {operation} {second_number} = {result}")
+        return "False"
 
 def _add(first_number, second_number):
     return first_number + second_number
@@ -34,43 +30,37 @@ def _subtract(first_number, second_number):
     return first_number - second_number
 
 def _multiply(first_number, second_number):
-    return first_number / second_number
+    return first_number * second_number
 
 def _divide(first_number, second_number):
     return first_number / second_number
 
-#-------------------------#
+def _to_the_power(first_number, second_number):
+    return first_number ** second_number
 
-def main_program():
-    print("Hi, welcome to the calculator program! :-)")
+operation_dict = {
+    "add": _add,
+    "subtract": _subtract,
+    "multiply": _multiply,
+    "divide": _divide,
+    "check factors": _factor_check,
+    "raise to the power": _to_the_power
+}
 
+# ---------------------------------- # 
+
+def main_program(operations):
+    print("Hi, welcome to the calculator program!")
+    print ("Please input the numbers\n--------------")
     first_input = _get_number(1)
     second_input = _get_number(2)
+    goal = _get_goal(operations)
 
-    goal = _get_goal()
-    
-    #STORE FUNCTION NAMES IN A DICT#
-    operation_dict = {
-        "add": _add,   # no () because only storing function name, not execution!
-        "subtract": _subtract,
-        "multiply": _multiply,
-        "divide": _divide,
-        "check factors": _factor_check
-    }
+    if not goal in operations:
+        result = "invalid goal"
+    else:
+        result = operation_dict[goal](first_input, second_input)
 
-    # if goal == "add":
-    #     result = first_input + second_input
-    # elif goal == "subtract":
-    #     result = first_input - second_input
-    # elif goal == "multiply":
-    #     result = first_input * second_input
-    # elif goal == "divide":
-    #     result = first_input / second_input
-    # elif goal == "check factors":
-    #     result = _factor_check(first_input, second_input)
-    # else:
-    #     result = "Invalid goal"
-    
     _print_result(first_input, second_input, goal, result)
 
-main_program()
+main_program(operation_dict)
